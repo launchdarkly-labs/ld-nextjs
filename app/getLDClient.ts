@@ -10,7 +10,7 @@ const getLDClient = async () => {
 
   if (!ldc.initialized()) {
     try {
-      await ldc.waitForInitialization({ timeout: 2 });
+      await ldc.waitForInitialization({ timeout: 5 });
     } catch (e) {
       console.log('=========== ld init timeout');
     }
