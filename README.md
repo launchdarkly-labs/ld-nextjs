@@ -1,5 +1,7 @@
 > [!IMPORTANT]  
-> This is an experimental project to demonstrate the use of LaunchDarkly with Next.js App Router.
+> This is an experimental project to demonstrate the use of LaunchDarkly with Next.js App Router. 
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) using App Router.
 
 ## Quickstart
 
