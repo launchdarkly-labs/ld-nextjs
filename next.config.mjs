@@ -1,6 +1,6 @@
-export default async (phase, { defaultConfig }) => {
-  const ld = await import('@launchdarkly/node-server-sdk');
+import ld from '@launchdarkly/node-server-sdk';
 
+const nextConfig = () => {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     return {
       serverRuntimeConfig: {
@@ -9,6 +9,6 @@ export default async (phase, { defaultConfig }) => {
       },
     };
   }
-
-  return defaultConfig;
 };
+
+export default nextConfig;
