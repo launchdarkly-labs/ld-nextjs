@@ -340,13 +340,6 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.10.3.tgz#391d528054f758f81e53210f1a1eebcf1a8b1d20"
   integrity sha512-qC/xYId4NMebE6w/V33Fh9gWxLgURiNYgVNObbJl2LZv0GUUItCcCqC5axQSwRaAgaxl2mELq1rMzlswaQ0Zxg==
 
-"@sitespeed.io/throttle@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@sitespeed.io/throttle/-/throttle-5.0.0.tgz#cab9121ddc727ad29347d0b2dd694a4fa0f95734"
-  integrity sha512-eul4I7IllA6l3+GGX1aW/D75XYux0ODuZDzstKD0kAuvIkpQ4BVLkFBoLXQN50gLMFGqZ3QWMobhQ5L2/6sFgg==
-  dependencies:
-    minimist "1.2.6"
-
 "@swc/counter@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@swc/counter/-/counter-0.1.3.tgz#cc7463bd02949611c6329596fccd2b0ec782b0e9"
@@ -2051,11 +2044,6 @@ minimatch@^9.0.1, minimatch@^9.0.4:
   integrity sha512-KqWh+VchfxcMNRAJjj2tnsSJdNbHsVgnkBhTNrW7AjVo6OvLtxw8zfT9oLw1JSohlFzJ8jCoTgaoXvJ+kHt6fw==
   dependencies:
     brace-expansion "^2.0.1"
-
-minimist@1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
-  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
 
 minimist@^1.2.0, minimist@^1.2.6:
   version "1.2.8"
