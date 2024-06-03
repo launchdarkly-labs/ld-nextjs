@@ -14,7 +14,7 @@ LD_SDK_KEY=sdk-***
 
 You should see your flag value rendered in the browser.
 
-## Original create-next-app readme 
+## Original create-next-app readme
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

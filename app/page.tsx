@@ -1,5 +1,6 @@
-import { LDContext } from '@launchdarkly/node-server-sdk';
 import getConfig from 'next/config';
+
+import { LDContext } from '@launchdarkly/node-server-sdk';
 
 export default async function Home() {
   const {
