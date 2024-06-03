@@ -1,22 +1,20 @@
 > [!IMPORTANT]  
 > This is an experimental project to demonstrate the use of LaunchDarkly with nextjs App Router.
-> It is not suitable for production use.
 
 ## Usage with LaunchDarkly
 
 1. Create an .env file at repo root.
-2. Add your SDK key and the flag key you want to evaluate.
+2. Add your SDK key.
 
 ```dotenv
 LD_SDK_KEY=sdk-***
-FLAG_KEY=my-boolean-flag
 ```
 
 3. `yarn && yarn dev`
 
 You should see your flag value rendered in the browser.
 
-## Original readme
+## Original create-next-app readme 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
