@@ -1,15 +1,17 @@
-import { LDClient, LDContext } from "@launchdarkly/node-server-sdk";
-
+import { LDContext } from "@launchdarkly/node-server-sdk";
+import getConfig from "next/config"; 
+ 
 export default async function Home() {
-  // @ts-ignore
-  const ldClient = global.ldClient as LDClient;
+  const {
+    serverRuntimeConfig: { ldClient },
+  } = getConfig(); 
+  
   const context: LDContext = { kind: "user", key: "test-user-key-1" };
-  // @ts-ignore
-  const v = await ldClient.variation(process.env.FLAG_KEY, context, false);
+  const flagValue = await ldClient.variation('dev-test-flag', context, false);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <p>{v ? "Hello from LD! flag true" : "Flag false"}</p>
+      <p>{flagValue ? "Hello from LD! Flag true" : "Flag false"}</p>
     </main>
   );
 }
