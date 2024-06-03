@@ -1,5 +1,4 @@
 import getLDClient from '@/app/getLDClient';
-import getConfig from 'next/config';
 
 import { LDContext } from '@launchdarkly/node-server-sdk';
 
