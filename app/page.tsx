@@ -1,11 +1,10 @@
+import getLDClient from '@/app/getLDClient';
 import getConfig from 'next/config';
 
 import { LDContext } from '@launchdarkly/node-server-sdk';
 
 export default async function Home() {
-  const {
-    serverRuntimeConfig: { ldClient },
-  } = getConfig();
+  const ldClient = await getLDClient();
 
   const context: LDContext = { kind: 'user', key: 'test-user-key-1' };
   const flagValue = await ldClient.variation('dev-test-flag', context, false);
