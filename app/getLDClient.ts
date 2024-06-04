@@ -12,7 +12,10 @@ const getLDClient = async () => {
     try {
       await ldc.waitForInitialization({ timeout: 5 });
     } catch (e) {
-      console.log('=========== ld init timeout');
+      // Log and report errors here.
+      // A non-initialized ldClient will be returned which
+      // will use defaults for evaluation.
+      console.log(`LaunchDarkly init error: ${e}`);
     }
   }
 
