@@ -1,3 +1,5 @@
+let isServer = typeof window === 'undefined';
+
 export const registerLD = async () => {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const nodeSdk = await import('@launchdarkly/node-server-sdk');
@@ -14,4 +16,11 @@ export const registerLD = async () => {
   }
 };
 
-export const getLDClient = () => global.nodeClient;
+export const getLDClient = () => {
+  if (isServer) {
+    return global.nodeClient;
+  }
+
+  // TODO:
+  // return jsClient;
+};
