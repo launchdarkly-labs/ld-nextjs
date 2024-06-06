@@ -1,5 +1,5 @@
-import { registerLD } from '@/ld/lib';
+import { initNodeSdk } from '@/ld';
 
 export async function register() {
-  await registerLD();
+  await initNodeSdk();
 }
