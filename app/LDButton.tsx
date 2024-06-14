@@ -1,6 +1,6 @@
 'use client';
 
-import { useLDClient } from '@/ld/provider/reactContext';
+import { useLDClient } from '@/ld/hooks';
 
 export default async function LDButton() {
   const ldc = useLDClient();
