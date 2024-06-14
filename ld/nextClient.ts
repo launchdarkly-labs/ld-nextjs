@@ -38,6 +38,7 @@ export default class NextClient {
   }
 
   async variation(key: string, defaultValue?: LDFlagValue): Promise<LDFlagValue> {
+    console.log(`========= calling variation. isServer ? ${isServer}, flagKey: ${key}`);
     return isServer
       ? this.nodeClient?.variation(key, await getLDContext(), defaultValue)
       : this.jsClient?.variation(key, defaultValue);

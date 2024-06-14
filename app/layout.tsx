@@ -1,8 +1,7 @@
-import { InitJSSdk } from '@/ld';
-import { getLDContext } from '@/ld/cookies';
-import NextClient from '@/ld/nextClient';
+import { LDProvider } from '@/ld/provider/reactContext';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { ReactNode } from 'react';
 
 import './globals.css';
 
@@ -16,15 +15,17 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
-  const context = await getLDContext();
-  const bootstrap = await NextClient.get().allFlags();
+  const context = { kind: 'user', key: 'nextjs-user-1' }; // await getLDContext();
+  // const ldc = NextClient.get();
+  // const bootstrap = await ldc.allFlags();
 
   return (
     <html lang="en">
-      <InitJSSdk context={context} options={{ bootstrap: JSON.parse(JSON.stringify(bootstrap)) }} />
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <LDProvider context={context}>{children}</LDProvider>
+      </body>
     </html>
   );
 }

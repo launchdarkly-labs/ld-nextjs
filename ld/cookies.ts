@@ -13,6 +13,6 @@ export async function getLDContext() {
     context = ld ? JSON.parse(ld.value) : context;
   }
 
-  console.log(`-------- getLDContext: ${JSON.stringify(context)}`);
+  // console.log(`-------- getLDContext: ${JSON.stringify(context)}`);
   return context;
 }

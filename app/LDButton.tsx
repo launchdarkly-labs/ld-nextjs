@@ -1,15 +1,10 @@
 'use client';
 
-import NextClient from '@/ld/nextClient';
-import { useState } from 'react';
+import { useLDClient } from '@/ld/provider/reactContext';
 
-export default function LDButton() {
-  const [flagValue, setFlagValue] = useState(false);
+export default async function LDButton() {
+  const ldc = useLDClient();
+  const flagValue = await ldc?.variation('dev-test-flag');
 
-  const onClickButton = async () => {
-    const v = await NextClient.get().variation('dev-test-flag', false);
-    setFlagValue(v);
-  };
-
-  return <button onClick={onClickButton}>{flagValue.toString()}</button>;
+  return <p>{flagValue ? 'Hello from LD! Flag true' : 'Flag false'}</p>;
 }
