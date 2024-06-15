@@ -5,7 +5,7 @@ export const initNodeSdk = async () => {
     const sdk = await import('@launchdarkly/node-server-sdk');
     const nodeClient = sdk.init(process.env.LD_SDK_KEY ?? '');
 
-    // Cons
+    // Create a new nodejs client and save it globally.
     const nextClient = new NextClient(nodeClient);
 
     try {

@@ -1,7 +1,9 @@
 'use client';
 
+import { getGlobalNextClient } from '@/ld/globals';
 import { isServer } from '@/ld/isServer';
 import NextClient from '@/ld/nextClient';
+import setupListeners from '@/ld/provider/setupListeners';
 import { basicLogger, initialize, LDContext, type LDOptions } from 'launchdarkly-js-client-sdk';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 
@@ -23,7 +25,7 @@ type LDProps = {
  * @constructor
  */
 const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
-  let client: NextClient = NextClient.get();
+  let client: NextClient = getGlobalNextClient();
 
   if (!isServer && !client?.jsClient) {
     const jsClient = initialize(process.env.NEXT_PUBLIC_LD_CLIENT_SIDE_ID ?? '', context, {
@@ -34,6 +36,10 @@ const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) 
   }
 
   const [state, setState] = useState<ReactContext>({ client });
+
+  useEffect(() => {
+    setupListeners(client, setState);
+  }, []);
 
   return <Provider value={state}>{children}</Provider>;
 };

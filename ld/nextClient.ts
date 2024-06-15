@@ -1,8 +1,8 @@
-import { getLDContext } from '@/ld/cookies';
+import { getGlobalBootstrap, getGlobalLDContext, setGlobalNextClient } from '@/ld/globals';
 import { isServer } from '@/ld/isServer';
 import type { JSClient, NodeClient } from '@/ld/types';
 
-import type { LDContext, LDFlagValue } from '@launchdarkly/js-sdk-common';
+import type { LDFlagValue } from '@launchdarkly/js-sdk-common';
 
 export default class NextClient {
   /**
@@ -15,20 +15,16 @@ export default class NextClient {
     public readonly nodeClient?: NodeClient,
     public readonly jsClient?: JSClient,
   ) {
-    global.nextClient = this;
+    setGlobalNextClient(this);
   }
-
-  static get() {
-    return global.nextClient;
-  }
-
-  async allFlags() {
+  allFlags() {
     if (isServer) {
-      return await this.nodeClient?.allFlagsState(await getLDContext());
+      return getGlobalBootstrap();
     }
 
-    return Promise.resolve(this.jsClient?.allFlags());
+    return this.jsClient?.allFlags();
   }
+
   async waitForInitialization(timeout: number): Promise<void> {
     if (isServer) {
       await this.nodeClient?.waitForInitialization({ timeout });
@@ -37,10 +33,21 @@ export default class NextClient {
     await this.jsClient?.waitForInitialization(timeout);
   }
 
-  async variation(key: string, defaultValue?: LDFlagValue): Promise<LDFlagValue> {
-    console.log(`========= calling variation. isServer ? ${isServer}, flagKey: ${key}`);
-    return isServer
-      ? this.nodeClient?.variation(key, await getLDContext(), defaultValue)
-      : this.jsClient?.variation(key, defaultValue);
+  variation(key: string, defaultValue?: LDFlagValue): LDFlagValue {
+    if (isServer) {
+      // invoke variation for analytics
+      this.nodeClient?.variation(key, getGlobalLDContext(), defaultValue);
+      return getGlobalBootstrap()?.[key];
+    } else {
+      return this.jsClient?.variation(key, defaultValue);
+    }
+  }
+
+  on(eventName: string, handler: () => void) {
+    if (isServer) {
+      this.nodeClient?.on(eventName === 'change' ? 'update' : eventName, handler);
+    }
+
+    this.jsClient?.on(eventName, handler);
   }
 }

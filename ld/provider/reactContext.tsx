@@ -1,5 +1,6 @@
 'use client';
 
+import { getGlobalNextClient } from '@/ld/globals';
 import NextClient from '@/ld/nextClient';
 import { createContext } from 'react';
 
@@ -8,7 +9,7 @@ export type ReactContext = {
 };
 
 export const context = createContext<ReactContext>({
-  client: NextClient.get(),
+  client: getGlobalNextClient(),
 });
 
 const { Provider, Consumer } = context;
