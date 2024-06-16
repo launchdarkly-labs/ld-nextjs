@@ -1,11 +1,11 @@
-import type NextClient from '@/ld/nextClient';
+import type NextSdk from '@/ld/nextSdk';
 import type { Dispatch, SetStateAction } from 'react';
 
 import { ReactContext } from './reactContext';
 
-const setupListeners = (client: NextClient, setState: Dispatch<SetStateAction<ReactContext>>) => {
-  client.on('change', () => {
-    setState({ client });
+const setupListeners = (nextSdk: NextSdk, setState: Dispatch<SetStateAction<ReactContext>>) => {
+  nextSdk.on('change', () => {
+    setState({ nextSdk });
   });
 };
 

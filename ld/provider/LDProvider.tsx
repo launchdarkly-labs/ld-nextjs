@@ -1,11 +1,12 @@
 'use client';
 
-import { getGlobalNextClient } from '@/ld/globals';
 import { isServer } from '@/ld/isServer';
-import NextClient from '@/ld/nextClient';
+import NextSdk from '@/ld/nextSdk';
 import setupListeners from '@/ld/provider/setupListeners';
-import { basicLogger, initialize, LDContext, type LDOptions } from 'launchdarkly-js-client-sdk';
+import { basicLogger, initialize, type LDOptions } from 'launchdarkly-js-client-sdk';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
+
+import { LDContext } from '@launchdarkly/js-sdk-common';
 
 import { Provider, type ReactContext } from './reactContext';
 
@@ -13,6 +14,9 @@ type LDProps = {
   context: LDContext;
   options?: LDOptions;
 };
+
+// HACK: this is used on the server side to bypass react context api.
+export let _getNextSdk: () => NextSdk;
 
 /**
  * This is the LaunchDarkly Provider which uses the React context api to store
@@ -25,20 +29,23 @@ type LDProps = {
  * @constructor
  */
 const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
-  let client: NextClient = getGlobalNextClient();
+  let nextSdk: NextSdk = new NextSdk(context, options?.bootstrap as any);
 
-  if (!isServer && !client?.jsClient) {
-    const jsClient = initialize(process.env.NEXT_PUBLIC_LD_CLIENT_SIDE_ID ?? '', context, {
+  if (!isServer) {
+    const jsSdk = initialize(process.env.NEXT_PUBLIC_LD_CLIENT_SIDE_ID ?? '', context, {
       ...options,
       logger: basicLogger({ level: 'debug' }),
     });
-    client = new NextClient(undefined, jsClient);
+
+    nextSdk = new NextSdk(context, options?.bootstrap as any, jsSdk);
   }
 
-  const [state, setState] = useState<ReactContext>({ client });
+  _getNextSdk = () => nextSdk;
+
+  const [state, setState] = useState<ReactContext>({ nextSdk });
 
   useEffect(() => {
-    setupListeners(client, setState);
+    setupListeners(nextSdk, setState);
   }, []);
 
   return <Provider value={state}>{children}</Provider>;

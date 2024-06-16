@@ -1,2 +1,2 @@
 export * from './initNodeSdk';
-export * from './nextClient';
+export * from './nextSdk';

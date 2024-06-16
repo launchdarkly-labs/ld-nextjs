@@ -1,15 +1,14 @@
 'use client';
 
-import { getGlobalNextClient } from '@/ld/globals';
-import NextClient from '@/ld/nextClient';
+import NextSdk from '@/ld/nextSdk';
 import { createContext } from 'react';
 
 export type ReactContext = {
-  client: NextClient;
+  nextSdk: NextSdk;
 };
 
 export const context = createContext<ReactContext>({
-  client: getGlobalNextClient(),
+  nextSdk: {} as any,
 });
 
 const { Provider, Consumer } = context;

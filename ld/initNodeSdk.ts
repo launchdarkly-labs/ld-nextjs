@@ -1,15 +1,14 @@
-import NextClient from '@/ld/nextClient';
+import NextSdk from '@/ld/nextSdk';
 
 export const initNodeSdk = async () => {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const sdk = await import('@launchdarkly/node-server-sdk');
-    const nodeClient = sdk.init(process.env.LD_SDK_KEY ?? '');
 
     // Create a new nodejs client and save it globally.
-    const nextClient = new NextClient(nodeClient);
+    global.nodeSdk = sdk.init(process.env.LD_SDK_KEY ?? '');
 
     try {
-      await nextClient.waitForInitialization(5);
+      await global.nodeSdk.waitForInitialization({ timeout: 5 });
     } catch (e) {
       // Log and report errors here.
       // A non-initialized ldClient will be returned which
