@@ -1,7 +1,8 @@
 'use client';
 
-import NextSdk from '@/ld/nextSdk';
 import { createContext } from 'react';
+
+import NextSdk from '../nextSdk';
 
 export type ReactContext = {
   nextSdk: NextSdk;

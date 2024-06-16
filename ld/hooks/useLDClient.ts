@@ -1,8 +1,8 @@
-import { isServer } from '@/ld/isServer';
-import { getNextSdk } from '@/ld/provider/LDProvider';
 import { useContext } from 'react';
 
-import { context, type ReactContext } from '../provider/reactContext';
+import { getNextSdk } from '../client/LDProvider';
+import { context, type ReactContext } from '../client/reactContext';
+import { isServer } from '../isServer';
 
 const useLDClient = () => {
   if (isServer) {

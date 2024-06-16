@@ -1,6 +1,6 @@
-import type NextSdk from '@/ld/nextSdk';
 import type { Dispatch, SetStateAction } from 'react';
 
+import type NextSdk from '../nextSdk';
 import { ReactContext } from './reactContext';
 
 export const setupListeners = (

@@ -1,4 +1,5 @@
-import { getBootstrap, LDProvider } from '@/ld';
+import { LDProvider } from '@/ld/client';
+import { getBootstrap } from '@/ld/server';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';

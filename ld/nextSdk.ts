@@ -1,7 +1,7 @@
-import { isServer } from '@/ld/isServer';
-import type { JSSdk, NodeSdk } from '@/ld/types';
-
 import type { LDContext, LDFlagValue } from '@launchdarkly/js-sdk-common';
+
+import { isServer } from './isServer';
+import type { JSSdk, NodeSdk } from './types';
 
 export default class NextSdk {
   private nodeSdk: NodeSdk;
