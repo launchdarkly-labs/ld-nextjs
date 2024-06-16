@@ -1,12 +1,12 @@
 import { isServer } from '@/ld/isServer';
-import { _getNextSdk } from '@/ld/provider/LDProvider';
+import { getNextSdk } from '@/ld/provider/LDProvider';
 import { useContext } from 'react';
 
 import { context, type ReactContext } from '../provider/reactContext';
 
 const useLDClient = () => {
   if (isServer) {
-    return _getNextSdk();
+    return getNextSdk();
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

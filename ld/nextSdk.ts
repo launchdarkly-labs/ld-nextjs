@@ -1,5 +1,4 @@
 import { isServer } from '@/ld/isServer';
-import { getGlobalLDNodeSdk } from '@/ld/server';
 import type { JSSdk, NodeSdk } from '@/ld/types';
 
 import type { LDContext, LDFlagValue } from '@launchdarkly/js-sdk-common';
@@ -19,7 +18,7 @@ export default class NextSdk {
     public readonly bootstrap?: object,
     private readonly jsSdk?: JSSdk,
   ) {
-    this.nodeSdk = getGlobalLDNodeSdk();
+    this.nodeSdk = global.nodeSdk;
   }
 
   variation(key: string, defaultValue?: LDFlagValue): LDFlagValue {

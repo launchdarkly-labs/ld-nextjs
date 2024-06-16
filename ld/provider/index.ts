@@ -1,2 +1,4 @@
+import type { ReactContext } from '@/ld/provider/reactContext';
+
 export * from './LDProvider';
-export * from './reactContext';
+export type { ReactContext };

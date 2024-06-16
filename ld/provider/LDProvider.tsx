@@ -4,7 +4,7 @@ import { isServer } from '@/ld/isServer';
 import NextSdk from '@/ld/nextSdk';
 import { setupListeners } from '@/ld/provider/setupListeners';
 import { basicLogger, initialize, type LDOptions } from 'launchdarkly-js-client-sdk';
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { cache, PropsWithChildren, useEffect, useState } from 'react';
 
 import { LDContext } from '@launchdarkly/js-sdk-common';
 
@@ -16,7 +16,7 @@ type LDProps = {
 };
 
 // HACK: this is used on the server side to bypass react context api.
-export let _getNextSdk: () => NextSdk;
+let _getNextSdk: () => NextSdk;
 
 /**
  * This is the LaunchDarkly Provider which uses the React context api to store
@@ -50,3 +50,6 @@ export const LDProvider = ({ context, options, children }: PropsWithChildren<LDP
 
   return <Provider value={state}>{children}</Provider>;
 };
+
+// @ts-ignore
+export const getNextSdk = cache(_getNextSdk);
