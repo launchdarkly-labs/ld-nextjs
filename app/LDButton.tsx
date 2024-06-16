@@ -1,6 +1,6 @@
 'use client';
 
-import { useLDClient } from '@/ld/hooks';
+import { useLDClient } from '@/ld';
 
 export default function LDButton() {
   const ldc = useLDClient();

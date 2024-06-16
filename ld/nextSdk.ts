@@ -1,8 +1,8 @@
-import { getGlobalLDNodeSdk } from '@/ld/globals';
 import { isServer } from '@/ld/isServer';
+import { getGlobalLDNodeSdk } from '@/ld/server';
 import type { JSSdk, NodeSdk } from '@/ld/types';
 
-import type { LDContext, LDFlagSet, LDFlagValue } from '@launchdarkly/js-sdk-common';
+import type { LDContext, LDFlagValue } from '@launchdarkly/js-sdk-common';
 
 export default class NextSdk {
   private nodeSdk: NodeSdk;

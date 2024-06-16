@@ -3,10 +3,11 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import { ReactContext } from './reactContext';
 
-const setupListeners = (nextSdk: NextSdk, setState: Dispatch<SetStateAction<ReactContext>>) => {
+export const setupListeners = (
+  nextSdk: NextSdk,
+  setState: Dispatch<SetStateAction<ReactContext>>,
+) => {
   nextSdk.on('change', () => {
     setState({ nextSdk });
   });
 };
-
-export default setupListeners;

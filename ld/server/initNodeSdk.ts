@@ -1,5 +1,3 @@
-import NextSdk from '@/ld/nextSdk';
-
 export const initNodeSdk = async () => {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const sdk = await import('@launchdarkly/node-server-sdk');

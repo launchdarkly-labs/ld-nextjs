@@ -2,7 +2,7 @@
 
 import { isServer } from '@/ld/isServer';
 import NextSdk from '@/ld/nextSdk';
-import setupListeners from '@/ld/provider/setupListeners';
+import { setupListeners } from '@/ld/provider/setupListeners';
 import { basicLogger, initialize, type LDOptions } from 'launchdarkly-js-client-sdk';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 
@@ -28,7 +28,7 @@ export let _getNextSdk: () => NextSdk;
  *
  * @constructor
  */
-const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
+export const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
   let nextSdk: NextSdk = new NextSdk(context, options?.bootstrap as any);
 
   if (!isServer) {
@@ -50,5 +50,3 @@ const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) 
 
   return <Provider value={state}>{children}</Provider>;
 };
-
-export default LDProvider;
