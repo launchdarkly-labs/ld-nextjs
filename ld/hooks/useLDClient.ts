@@ -6,10 +6,9 @@ import { isServer } from '../isServer';
 
 const useLDClient = () => {
   if (isServer) {
+    // Use our own cache on the server because react context is n/a.
     const sdk = getNextSdk();
-    console.log(
-      `====== server ldClient with: ${JSON.stringify(sdk.ldContext)} \n\n ${JSON.stringify(sdk.bootstrap)}`,
-    );
+    return sdk;
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

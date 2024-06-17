@@ -9,9 +9,13 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      From server, flagValue is {flagValue ? 'true' : 'false'}. <br />
-      Below is LDButton.
-      <LDButton />
+      <b>Server rendered</b>
+      <div>context: {JSON.stringify(ldc.getContext())}</div>
+      <div>flagValue is {flagValue ? 'true' : 'false'}.</div>
+      <div>
+        Below is LDButton.
+        <LDButton />
+      </div>
     </main>
   );
 }
