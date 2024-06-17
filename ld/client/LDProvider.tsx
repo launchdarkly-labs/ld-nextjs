@@ -1,5 +1,6 @@
 'use client';
 
+import { setNextSdk } from '@/ld/server/cacheMap';
 import { basicLogger, initialize, type LDOptions } from 'launchdarkly-js-client-sdk';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
@@ -15,9 +16,6 @@ type LDProps = {
   options?: LDOptions;
 };
 
-// HACK: this is used on the server side to bypass react context api.
-export let getNextSdk: () => NextSdk;
-
 /**
  * This is the LaunchDarkly Provider which uses the React context api to store
  * and pass data to child components through hooks.
@@ -31,7 +29,10 @@ export let getNextSdk: () => NextSdk;
 export const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
   let nextSdk: NextSdk = new NextSdk(context, options?.bootstrap as any);
 
-  if (!isServer) {
+  if (isServer) {
+    // On the server, we can't use context so we use an in-memory cache to fake it.
+    setNextSdk(nextSdk);
+  } else {
     const jsSdk = initialize(process.env.NEXT_PUBLIC_LD_CLIENT_SIDE_ID ?? '', context, {
       ...options,
       logger: basicLogger({ level: 'debug' }),
@@ -39,8 +40,6 @@ export const LDProvider = ({ context, options, children }: PropsWithChildren<LDP
 
     nextSdk = new NextSdk(context, options?.bootstrap as any, jsSdk);
   }
-
-  getNextSdk = () => nextSdk;
 
   const [state, setState] = useState<ReactContext>({ nextSdk });
 
