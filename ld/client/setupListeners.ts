@@ -1,13 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react';
 
-import type NextSdk from '../nextSdk';
+import { JSSdk } from '../types';
 import { ReactContext } from './reactContext';
 
-export const setupListeners = (
-  nextSdk: NextSdk,
-  setState: Dispatch<SetStateAction<ReactContext>>,
-) => {
-  nextSdk.on('change', () => {
-    setState({ nextSdk });
+export const setupListeners = (jsSdk: JSSdk, setState: Dispatch<SetStateAction<ReactContext>>) => {
+  jsSdk.on('change', () => {
+    setState({ jsSdk });
   });
 };

@@ -2,14 +2,14 @@
 
 import { createContext } from 'react';
 
-import NextSdk from '../nextSdk';
+import type { JSSdk } from '../types';
 
 export type ReactContext = {
-  nextSdk: NextSdk;
+  jsSdk: JSSdk;
 };
 
 export const context = createContext<ReactContext>({
-  nextSdk: {} as any,
+  jsSdk: {} as any,
 });
 
 const { Provider, Consumer } = context;

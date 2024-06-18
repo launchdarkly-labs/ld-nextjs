@@ -1,21 +1,17 @@
-import { getNextSdk } from '@/ld/server/cacheMap';
 import { useContext } from 'react';
 
 import { context, type ReactContext } from '../client/reactContext';
+import { getSkinnySdk } from '../client/skinnySdk';
 import { isServer } from '../isServer';
 
-const useLDClient = (source?: string) => {
+const useLDClient = () => {
   if (isServer) {
-    let sdk = getNextSdk();
-    if (!sdk) {
-      console.log(`====== ${source} sdk undefined`);
-    }
-    return sdk;
+    return getSkinnySdk();
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { nextSdk } = useContext<ReactContext>(context);
-  return nextSdk;
+  const { jsSdk } = useContext<ReactContext>(context);
+  return jsSdk;
 };
 
 export default useLDClient;

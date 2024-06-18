@@ -1,22 +1,22 @@
 import LDButton from '@/app/LDButton';
 import { useLDClient } from '@/ld';
-import { setupServerCache } from '@/ld/server/cacheMap';
+import { LDProvider } from '@/ld/client';
+import { initSkinnySdk } from '@/ld/server/initSkinnySdk';
 
 export default async function Home() {
-  await setupServerCache({ kind: 'user', key: 'nextjs-default-user' });
-
-  const ldc = useLDClient('page.tsx');
+  const { context, bootstrap } = await initSkinnySdk({ kind: 'user', key: 'nextjs-default-user' });
+  const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Server rendered
-      <br />
-      context: {JSON.stringify(ldc.getContext())}
-      <br />
-      flagValue is {flagValue ? 'true' : 'false'}.
-      <br />
-      <LDButton />
-    </main>
+    <LDProvider context={context} options={{ bootstrap }}>
+      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        Server rendered
+        <br />
+        flagValue is {flagValue ? 'true' : 'false'}.
+        <br />
+        <LDButton />
+      </main>
+    </LDProvider>
   );
 }
