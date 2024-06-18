@@ -1,21 +1,22 @@
-'use client';
-
 import LDButton from '@/app/LDButton';
 import { useLDClient } from '@/ld';
+import { setupServerCache } from '@/ld/server/cacheMap';
 
-export default function Home() {
-  const ldc = useLDClient();
+export default async function Home() {
+  await setupServerCache({ kind: 'user', key: 'nextjs-default-user' });
+
+  const ldc = useLDClient('page.tsx');
   const flagValue = ldc.variation('dev-test-flag');
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <b>Server rendered</b>
-      <div>context: {JSON.stringify(ldc.getContext())}</div>
-      <div>flagValue is {flagValue ? 'true' : 'false'}.</div>
-      <div>
-        Below is LDButton.
-        <LDButton />
-      </div>
+      Server rendered
+      <br />
+      context: {JSON.stringify(ldc.getContext())}
+      <br />
+      flagValue is {flagValue ? 'true' : 'false'}.
+      <br />
+      <LDButton />
     </main>
   );
 }

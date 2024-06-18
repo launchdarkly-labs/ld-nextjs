@@ -4,10 +4,12 @@ import { useContext } from 'react';
 import { context, type ReactContext } from '../client/reactContext';
 import { isServer } from '../isServer';
 
-const useLDClient = () => {
+const useLDClient = (source?: string) => {
   if (isServer) {
-    // Use our own cache on the server because react context is n/a.
-    const sdk = getNextSdk();
+    let sdk = getNextSdk();
+    if (!sdk) {
+      console.log(`====== ${source} sdk undefined`);
+    }
     return sdk;
   }
 

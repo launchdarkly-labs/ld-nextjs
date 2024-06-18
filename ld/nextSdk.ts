@@ -22,9 +22,8 @@ export default class NextSdk {
   ) {
     this.nodeSdk = global.nodeSdk;
 
-    console.log(`--------- Init NextSDK with: 
+    console.log(`--------- NextSDK constructor: 
     context: ${JSON.stringify(ldContext)}
-   
     bootstrap: ${JSON.stringify(bootstrap)}
     `);
   }
