@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 
 import { context, type ReactContext } from '../client/reactContext';
-import { getSkinnySdk } from '../client/skinnySdk';
+import { getSsrLDClient } from '../client/ssrLDClient';
 import { isServer } from '../isServer';
 
 const useLDClient = () => {
   if (isServer) {
-    return getSkinnySdk();
+    return getSsrLDClient();
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

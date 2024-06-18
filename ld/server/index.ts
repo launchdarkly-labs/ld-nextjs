@@ -1,2 +1,2 @@
 export * from './initNodeSdk';
-export * from './getBootstrap';
+export * from './initSsr';

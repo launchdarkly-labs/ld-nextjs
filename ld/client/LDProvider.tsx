@@ -8,7 +8,7 @@ import { LDContext, LDFlagSet } from '@launchdarkly/js-sdk-common';
 import { isServer } from '../isServer';
 import { Provider, type ReactContext } from './reactContext';
 import { setupListeners } from './setupListeners';
-import { SkinnySdk } from './skinnySdk';
+import { SsrLDClient } from './ssrLDClient';
 
 type LDProps = {
   context: LDContext;
@@ -27,10 +27,10 @@ type LDProps = {
  */
 export const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
   if (isServer) {
-    // GOTCHA: The root Page component already calls initSkinnySdk but this is still required here otherwise
+    // GOTCHA: The root Page component already calls initSsr but this is still required here otherwise
     // server side rendering does not work for client components. It seems like on the server side, client components
     // are run asynchronously/somewhat differently from server components resulting in a race.
-    new SkinnySdk(context, options?.bootstrap as LDFlagSet);
+    new SsrLDClient(context, options?.bootstrap as LDFlagSet);
     return <>{children}</>;
   }
 
