@@ -1,5 +1,7 @@
 'use client';
 
+// GOTCHA: launchdarkly-js-client-sdk will soon be replaced with a new js package under
+// the launchdarkly/js-core repo.
 import { basicLogger, initialize, type LDOptions } from 'launchdarkly-js-client-sdk';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
