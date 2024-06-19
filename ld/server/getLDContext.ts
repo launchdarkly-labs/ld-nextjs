@@ -5,7 +5,11 @@ import { isServer } from '../isServer';
 const anonymous: LDContext = { kind: 'user', key: 'anon-key', anonymous: true };
 
 /**
- * Unused. Example only.
+ * Looks for an LDContext in a server cookie called 'ld'.
+ *
+ * @param def The default context if none is found in cookies. If unspecified
+ * and none is found in cookies then anonymous is returned.
+ *
  */
 export async function getLDContext(def?: LDContext) {
   let context = def ?? anonymous;

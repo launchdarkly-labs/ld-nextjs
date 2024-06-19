@@ -4,6 +4,11 @@ import { context, type ReactContext } from '../client/reactContext';
 import { getSsrLDClient } from '../client/ssrLDClient';
 import { isServer } from '../isServer';
 
+/**
+ * This is a universal hook compatible on both the server and client.
+ *
+ * On the server side, react context is n/a so we return our own ssr client.
+ */
 const useLDClient = () => {
   if (isServer) {
     return getSsrLDClient();

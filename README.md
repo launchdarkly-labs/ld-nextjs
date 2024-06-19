@@ -31,9 +31,12 @@ You should see your flag value rendered in the browser.
 
 The code under `ld` exposes these public apis:
 
-* initNodeSdk
-* initSsr
+* initNodeSdk - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
+
+* initSsr - 
+
 * LDProvider
+
 * useLDClient
 
 Follow these instructions if you want to test this apis in your own project:

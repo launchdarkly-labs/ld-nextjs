@@ -1,3 +1,7 @@
+/**
+ * Run this once in the instrumentation hook to set up the Node SDK.
+ * The node client created is saved in a global variable.
+ */
 export const initNodeSdk = async () => {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const sdk = await import('@launchdarkly/node-server-sdk');
