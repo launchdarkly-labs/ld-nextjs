@@ -31,13 +31,13 @@ You should see your flag value rendered in the browser.
 
 The code under `ld` exposes these public apis:
 
-* initNodeSdk - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
+* `initNodeSdk` - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
 
-* initSsr - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
+* `initSsr` - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
 
-* LDProvider - The react context provider used on the client side.
+* `LDProvider` - The react context provider used on the client side.
 
-* useLDClient - Universal hook for the server and client side to get the ld client. Use this hook to get the client and evaluate flags.
+* `useLDClient` - Universal hook for the server and client side to get the ld client. Use this hook to get the client and evaluate flags.
 
 Follow these instructions if you want to test this apis in your own project:
 
@@ -133,3 +133,48 @@ export default function Home() {
   return <>Client component. FlagValue is {flagValue ? 'true' : 'false'}.</>
 }
 ```
+
+## Known issue
+
+There is an [issue](https://github.com/vercel/next.js/discussions/53026) with App Router where nested pages render before their parent layouts. This means if you want to evaluate flags in a page component, you must run `initSsr` in that page component.
+
+```tsx
+// page.tsx
+export default async function Page() {
+  // Won't work. The ssr client is undefined because this Page runs before the parent layout.
+  const ldc = useLDClient();
+  const flagValue = ldc.variation('dev-test-flag');
+
+  return (
+    <>
+      page.tsx: {flagValue.toString()}
+      <YourApp />
+    </>
+  );
+}
+```
+
+As a workaround, run `initSsr` in page.tsx in addition to layout.tsx to ensure the ssr client is setup:
+
+```tsx
+export default async function Page() {
+  // Ensure the ssr client is set up
+  await initSsr({
+    kind: 'user',
+    key: 'nextjs-default-user',
+  });
+
+  // Works now
+  const ldc = useLDClient();
+  const flagValue = ldc.variation('dev-test-flag');
+
+  return (
+    <>
+      page.tsx: {flagValue.toString()}
+      <YourApp />
+    </>
+  );
+}
+```
+
+Don't worry `initSsr` checks to ensure the ssr client is initialized only once even if you call it multiple times. Note that you only need to use this workaround if you actually need to evaluate flags in a page component. For example, if you only evaluate flags in children components below Page, then you can safely ignore this completely and just call `initSsr` once in the root layout.
