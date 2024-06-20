@@ -33,11 +33,11 @@ The code under `ld` exposes these public apis:
 
 * initNodeSdk - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
 
-* initSsr - 
+* initSsr - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
 
-* LDProvider
+* LDProvider - The react context provider used on the client side.
 
-* useLDClient
+* useLDClient - Universal hook for the server and client side to get the ld client. Use this hook to get the client and evaluate flags.
 
 Follow these instructions if you want to test this apis in your own project:
 
@@ -63,27 +63,44 @@ export async function register() {
 }
 ```
 
-3. In your `app` folder, each page component must be async and must run `initSsr`:
+3. In your root layout component, run `initSsr` and pass the context and bootstrap to the LDProvider:
 
 ```tsx
-// must be async
-export default async function RootPage() {
-  // must be run in each page component
+// layout.tsx
+export default async function RootLayout({
+                                           children,
+                                         }: Readonly<{
+  children: ReactNode;
+}>) {
+  // Set up the ssr client
   const { context, bootstrap } = await initSsr({
     kind: 'user',
     key: 'nextjs-default-user',
   });
 
-  // pass context and bootstrap to LDProvider
+  // Pass context and bootstrap to LDProvider
   return (
-    <LDProvider context={context} options={{ bootstrap }}>
-      <YourApp />
-    </LDProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <LDProvider context={context} options={{ bootstrap }}>
+          {children}
+        </LDProvider>
+      </body>
+    </html>
   );
 }
 ```
 
-4. Then all components server and client will be able to use the `useLDClient` hook to get an LDClient and evaluate flags. In each case, server side rendering should work too:
+4. Mark your root page component as async:
+
+```tsx
+// page.tsx must be async
+export default async function Page() {
+  return <YourApp />;
+}
+```
+
+5. Then all other components server and client will be able to use the universal `useLDClient` hook to get an ld client and evaluate flags. In each case, server side rendering should work too:
 
 #### Server Component
 ```tsx
@@ -95,7 +112,7 @@ export default async function YourApp() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      FlagValue is {flagValue ? 'true' : 'false'}.
+      Server component. FlagValue is {flagValue ? 'true' : 'false'}.
       <br />
       <Home />
     </main>
@@ -113,6 +130,6 @@ export default function Home() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
 
-  return <p>{flagValue ? 'Hello from LD! Flag true' : 'Flag false'}</p>;
+  return <>Client component. FlagValue is {flagValue ? 'true' : 'false'}.</>
 }
 ```

@@ -3,7 +3,7 @@ import { useLDClient } from '@/ld';
 
 // All remaining server and client components can use the universal
 // useLDClient hook to evaluate flags.
-export default function App() {
+export default async function App() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
 

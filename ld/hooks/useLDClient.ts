@@ -7,8 +7,8 @@ import { isServer } from '../isServer';
 /**
  * This is a universal hook compatible on both the server and client.
  *
- * On the server side, react context is n/a so we return our own ssr client
- * from an in-memory Map.
+ * On the server side, an {@link SsrLDClient) is returned.
+ * On the client side, the js sdk client is returned.
  */
 const useLDClient = () => {
   if (isServer) {
