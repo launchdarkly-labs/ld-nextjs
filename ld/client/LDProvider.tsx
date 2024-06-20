@@ -29,7 +29,7 @@ type LDProps = {
  */
 export const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
   if (isServer) {
-    // GOTCHA: The root Page component already calls initSsr but this is still required here otherwise
+    // GOTCHA: The root layout component already calls initSsr but this is still required here otherwise
     // server side rendering does not work for client components. It seems like on the server side, client components
     // are run asynchronously/somewhat differently from server components resulting in a race.
     new SsrLDClient(context, options?.bootstrap as LDFlagSet);

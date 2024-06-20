@@ -18,7 +18,7 @@ export async function getLDContext(def?: LDContext) {
     const { cookies } = await import('next/headers');
     const ld = cookies().get('ld');
     if (!ld) {
-      console.log(`======= no cookie, defaulting to ${JSON.stringify(context)}`);
+      console.log(`*** no cookie, defaulting to ${JSON.stringify(context)} ***`);
     }
     context = ld ? JSON.parse(ld.value) : context;
   }
