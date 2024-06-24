@@ -19,8 +19,10 @@ export async function getLDContext(def?: LDContext) {
     const ld = cookies().get('ld');
     if (!ld) {
       console.log(`*** no cookie, defaulting to ${JSON.stringify(context)} ***`);
+    } else {
+      console.log(`*** found cookie ${JSON.stringify(ld.value)} ***`);
+      context = JSON.parse(ld.value);
     }
-    context = ld ? JSON.parse(ld.value) : context;
   }
 
   return context;
