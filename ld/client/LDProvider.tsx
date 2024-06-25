@@ -10,7 +10,7 @@ import { LDContext, LDFlagSet } from '@launchdarkly/js-sdk-common';
 import { isServer } from '../isServer';
 import { Provider, type ReactContext } from './reactContext';
 import { setupListeners } from './setupListeners';
-import { SsrLDClient } from './ssrLDClient';
+import { setSsrLDClient } from './ssrLDClient';
 
 type LDProps = {
   context: LDContext;
@@ -32,7 +32,7 @@ export const LDProvider = ({ context, options, children }: PropsWithChildren<LDP
     // GOTCHA: The root layout component already calls initSsr but this is still required here otherwise
     // server side rendering does not work for client components. It seems like on the server side, client components
     // are run asynchronously/somewhat differently from server components resulting in a race.
-    new SsrLDClient(context, options?.bootstrap as LDFlagSet);
+    setSsrLDClient(context, options?.bootstrap as LDFlagSet);
     return <>{children}</>;
   }
 

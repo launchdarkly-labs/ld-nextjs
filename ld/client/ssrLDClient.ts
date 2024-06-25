@@ -10,6 +10,12 @@ const serverReactContext = new Map<string, any>();
 
 export const getSsrLDClient = () => serverReactContext.get('ssrLDClient') as SsrLDClient;
 
+export const setSsrLDClient = (ldContext: LDContext, bootstrap: LDFlagSet) => {
+  const s = new SsrLDClient(ldContext, bootstrap);
+  serverReactContext.set('ssrLDClient', s);
+  return s;
+};
+
 /**
  * @internal
  *
@@ -30,9 +36,7 @@ export class SsrLDClient implements Partial<LDClient> {
   constructor(
     private readonly ldContext: LDContext,
     private readonly bootstrap: LDFlagSet,
-  ) {
-    serverReactContext.set('ssrLDClient', this);
-  }
+  ) {}
 
   allFlags(): LDFlagSet {
     return this.bootstrap;

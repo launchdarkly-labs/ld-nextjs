@@ -19,10 +19,7 @@ export default async function RootLayout({
   children: ReactNode;
 }>) {
   // Sets up the ssr client and share it across pages.
-  const { context, bootstrap } = await initSsr({
-    kind: 'user',
-    key: 'nextjs-default-user',
-  });
+  const { context, bootstrap } = await initSsr();
 
   return (
     <html lang="en">
