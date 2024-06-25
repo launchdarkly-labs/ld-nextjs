@@ -1,8 +1,9 @@
+import type { SsrLDClient } from '@/ld/server';
 import { useContext } from 'react';
 
 import { context, type ReactContext } from '../client/reactContext';
-import { getSsrLDClient } from '../client/ssrLDClient';
 import { isServer } from '../isServer';
+import { ssrCache } from '../server/ssr/ssrCache';
 
 /**
  * This is a universal hook compatible on both the server and client.
@@ -12,7 +13,7 @@ import { isServer } from '../isServer';
  */
 const useLDClient = () => {
   if (isServer) {
-    return getSsrLDClient();
+    return ssrCache.get('ssrLDClient') as SsrLDClient;
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

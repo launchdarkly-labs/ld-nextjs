@@ -3,20 +3,6 @@ import type { LDClient } from 'launchdarkly-js-client-sdk';
 import type { LDContext, LDFlagSet, LDFlagValue } from '@launchdarkly/js-sdk-common';
 
 /**
- * Stores react context on the server because the real react context
- * is not available on the server.
- */
-const serverReactContext = new Map<string, any>();
-
-export const getSsrLDClient = () => serverReactContext.get('ssrLDClient') as SsrLDClient;
-
-export const setSsrLDClient = (ldContext: LDContext, bootstrap: LDFlagSet) => {
-  const s = new SsrLDClient(ldContext, bootstrap);
-  serverReactContext.set('ssrLDClient', s);
-  return s;
-};
-
-/**
  * @internal
  *
  * Internal and for server only. Please use either the js or node sdk for all

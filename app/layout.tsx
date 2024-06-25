@@ -1,5 +1,5 @@
 import { LDProvider } from '@/ld/client';
-import { initSsr } from '@/ld/server';
+import { initSsrLDClient } from '@/ld/server';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
@@ -19,7 +19,7 @@ export default async function RootLayout({
   children: ReactNode;
 }>) {
   // Sets up the ssr client and share it across pages.
-  const { context, bootstrap } = await initSsr();
+  const { context, bootstrap } = await initSsrLDClient();
 
   return (
     <html lang="en">

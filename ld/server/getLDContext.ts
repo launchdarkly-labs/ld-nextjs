@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers';
+
 import type { LDContext } from '@launchdarkly/js-sdk-common';
 
 import { isServer } from '../isServer';
@@ -11,11 +13,10 @@ const anonymous: LDContext = { kind: 'user', key: 'anon-key', anonymous: true };
  * and none is found in cookies then anonymous is returned.
  *
  */
-export async function getLDContext(def?: LDContext) {
+export function getLDContext(def?: LDContext) {
   let context = def ?? anonymous;
 
   if (isServer) {
-    const { cookies } = await import('next/headers');
     const ld = cookies().get('ld');
     if (!ld) {
       console.log(`*** no cookie, defaulting to ${JSON.stringify(context)} ***`);

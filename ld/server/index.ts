@@ -1,2 +1,2 @@
 export * from './initNodeSdk';
-export * from './initSsr';
+export * from './ssr';

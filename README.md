@@ -1,12 +1,12 @@
 > [!IMPORTANT]  
 > This is an experimental project to demonstrate the use of LaunchDarkly with Next.js App Router.
-> 
+>
 > This is designed for the App Router. Pages router is not supported.
 
 This solution uses the Node Server SDK and the Javascript SDK. It features:
 
-* Server side rendering with both Server Components and Client Components.
-* A universal LDClient which works on both client and server.
+- Server side rendering with both Server Components and Client Components.
+- A universal LDClient which works on both client and server.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) using App Router.
 
@@ -31,13 +31,13 @@ You should see your flag value rendered in the browser.
 
 The code under `ld` exposes these public apis:
 
-* `initNodeSdk` - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
+- `initNodeSdk` - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
 
-* `initSsr` - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
+- `initSsr` - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
 
-* `LDProvider` - The react context provider used on the client side.
+- `LDProvider` - The react context provider used on the client side.
 
-* `useLDClient` - Universal hook for the server and client side to get the ld client. Use this hook to get the client and evaluate flags.
+- `useLDClient` - Universal hook for the server and client side to get the ld client. Use this hook to get the client and evaluate flags.
 
 Follow these instructions if you want to test this apis in your own project:
 
@@ -50,7 +50,6 @@ const nextConfig = {
 };
 
 export default nextConfig;
-
 ```
 
 2. Create a new file `instrumentation.ts` at the root of your project. This will initialize the Node Server SDK.
@@ -68,8 +67,8 @@ export async function register() {
 ```tsx
 // layout.tsx
 export default async function RootLayout({
-                                           children,
-                                         }: Readonly<{
+  children,
+}: Readonly<{
   children: ReactNode;
 }>) {
   // Set up the ssr client
@@ -103,6 +102,7 @@ export default async function Page() {
 5. Then all other components server and client will be able to use the universal `useLDClient` hook to get an ld client and evaluate flags. In each case, server side rendering should work too:
 
 #### Server Component
+
 ```tsx
 import { useLDClient } from '@/ld';
 
@@ -121,6 +121,7 @@ export default async function YourApp() {
 ```
 
 #### Client Component
+
 ```tsx
 'use client';
 
@@ -130,7 +131,7 @@ export default function Home() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
 
-  return <>Client component. FlagValue is {flagValue ? 'true' : 'false'}.</>
+  return <>Client component. FlagValue is {flagValue ? 'true' : 'false'}.</>;
 }
 ```
 
