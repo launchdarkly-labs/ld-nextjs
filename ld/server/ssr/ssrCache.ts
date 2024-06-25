@@ -11,7 +11,6 @@ export const createSsrCache = (context: LDContext, bootstrap: LDFlagSet) => {
     ssrCache = cache(() => new Map<string, any>())();
     ssrCache.set('ssrLDClient', new SsrLDClient(context, bootstrap));
   } catch (e) {
-    console.log(`client side using memory map`);
     ssrCache = new Map<string, any>();
     ssrCache.set('ssrLDClient', new SsrLDClient(context, bootstrap));
   }

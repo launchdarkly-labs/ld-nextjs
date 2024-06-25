@@ -33,7 +33,7 @@ The code under `ld` exposes these public apis:
 
 - `initNodeSdk` - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
 
-- `initSsr` - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
+- `initSsrLDClient` - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
 
 - `LDProvider` - The react context provider used on the client side.
 
@@ -62,7 +62,7 @@ export async function register() {
 }
 ```
 
-3. In your root layout component, run `initSsr` and pass the context and bootstrap to the LDProvider:
+3. In your root layout component, run `initSsrLDClient` and pass the context and bootstrap to the LDProvider:
 
 ```tsx
 // layout.tsx
@@ -72,10 +72,7 @@ export default async function RootLayout({
   children: ReactNode;
 }>) {
   // Set up the ssr client
-  const { context, bootstrap } = await initSsr({
-    kind: 'user',
-    key: 'nextjs-default-user',
-  });
+  const { context, bootstrap } = await initSsrLDClient();
 
   // Pass context and bootstrap to LDProvider
   return (
@@ -93,7 +90,7 @@ export default async function RootLayout({
 4. Mark your root page component as async:
 
 ```tsx
-// page.tsx must be async
+// page.tsx must be async to ensure server cache is properly initialized.
 export default async function Page() {
   return <YourApp />;
 }
@@ -137,7 +134,7 @@ export default function Home() {
 
 ## Known issue
 
-There is an [issue](https://github.com/vercel/next.js/discussions/53026) with App Router where nested pages render before their parent layouts. This means if you want to evaluate flags in a page component, you must run `initSsr` in that page component.
+There is an [issue](https://github.com/vercel/next.js/discussions/53026) with App Router where nested pages render before their parent layouts. This means if you want to evaluate flags in a page component, you must run `initSsrLDClient` in that page component.
 
 ```tsx
 // page.tsx
@@ -155,15 +152,12 @@ export default async function Page() {
 }
 ```
 
-As a workaround, run `initSsr` in page.tsx in addition to layout.tsx to ensure the ssr client is setup:
+As a workaround, run `initSsrLDClient` in page.tsx in addition to layout.tsx to ensure the ssr client is setup:
 
 ```tsx
 export default async function Page() {
   // Ensure the ssr client is set up
-  await initSsr({
-    kind: 'user',
-    key: 'nextjs-default-user',
-  });
+  await initSsrLDClient();
 
   // Works now
   const ldc = useLDClient();
@@ -178,4 +172,4 @@ export default async function Page() {
 }
 ```
 
-Don't worry `initSsr` checks to ensure the ssr client is initialized only once even if you call it multiple times. Note that you only need to use this workaround if you actually need to evaluate flags in a page component. For example, if you only evaluate flags in children components below Page, then you can safely ignore this completely and just call `initSsr` once in the root layout.
+Don't worry `initSsrLDClient` checks to ensure the ssr client is initialized only once even if you call it multiple times. Note that you only need to use this workaround if you actually need to evaluate flags in a page component. For example, if you only evaluate flags in children components below Page, then you can safely ignore this completely and just call `initSsrLDClient` once at the root layout.
