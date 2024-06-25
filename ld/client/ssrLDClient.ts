@@ -1,6 +1,6 @@
 import type { LDClient } from 'launchdarkly-js-client-sdk';
 
-import { LDContext, LDFlagSet, LDFlagValue } from '@launchdarkly/js-sdk-common';
+import type { LDContext, LDFlagSet, LDFlagValue } from '@launchdarkly/js-sdk-common';
 
 /**
  * Stores react context on the server because the real react context
