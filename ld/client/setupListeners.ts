@@ -1,10 +1,12 @@
 import type { Dispatch, SetStateAction } from 'react';
 
-import { JSSdk } from '../types';
-import { ReactContext } from './reactContext';
+import type { LDContext, LDFlagSet } from '@launchdarkly/js-sdk-common';
 
-export const setupListeners = (jsSdk: JSSdk, setState: Dispatch<SetStateAction<ReactContext>>) => {
+import type { JSSdk } from '../types';
+import type { ReactContext } from './reactContext';
+
+export const setupListeners = (setState: Dispatch<SetStateAction<ReactContext>>, jsSdk: JSSdk) => {
   jsSdk.on('change', () => {
-    setState({ jsSdk });
+    setState((prevState) => ({ ...prevState, jsSdk }));
   });
 };

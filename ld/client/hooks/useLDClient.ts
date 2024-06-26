@@ -7,8 +7,8 @@ import { context as reactContext, type ReactContext } from '../reactContext';
  * Only useLDClient with Client Components.
  */
 export const useLDClient = () => {
-  const { context, bootstrap } = useContext<ReactContext>(reactContext);
+  const { context, bootstrap, jsSdk } = useContext<ReactContext>(reactContext);
 
-  // TODO: potentially memo this
-  return new LDClientRsc(context, bootstrap);
+  // TODO: memo construction of LDClientRsc
+  return jsSdk ?? new LDClientRsc(context, bootstrap);
 };

@@ -7,13 +7,13 @@ import { LDContext, LDFlagSet } from '@launchdarkly/js-sdk-common';
 import type { JSSdk } from '../types';
 
 export type ReactContext = {
-  // jsSdk: JSSdk;
+  jsSdk?: JSSdk;
   context: LDContext;
   bootstrap: LDFlagSet;
 };
 
 export const context = createContext<ReactContext>({
-  // jsSdk: {} as any,
+  jsSdk: undefined as any,
   context: {} as any,
   bootstrap: undefined as any,
 });
