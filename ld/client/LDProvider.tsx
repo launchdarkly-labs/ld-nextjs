@@ -19,9 +19,9 @@ type LDProps = {
  * This is the LaunchDarkly Provider which uses the React context api to store
  * and pass data to child components through hooks.
  *
- * @param context
- * @param options
- * @param children
+ * @param context The LDContext for evaluation.
+ * @param options Configuration options for the js sdk. See {@link LDOptions}.
+ * @param children Your react application to be rendered.
  */
 
 export const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {

@@ -4,9 +4,7 @@ import { getLDContext } from '@/app/utils';
 import { useLDClientRsc } from '@/ld/server';
 import Link from 'next/link';
 
-/**
- * Server components must be async and useLDClientRsc.
- */
+// Server Components must useLDClientRsc for evaluation.
 export default async function Page() {
   const ldc = await useLDClientRsc(getLDContext());
   const flagValue = ldc.variation('dev-test-flag');

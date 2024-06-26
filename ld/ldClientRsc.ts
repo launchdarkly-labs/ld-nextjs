@@ -2,6 +2,9 @@ import type { LDContext, LDFlagSet, LDFlagValue } from '@launchdarkly/js-sdk-com
 
 import { JSSdk } from './types';
 
+/**
+ * A partial ldClient suitable for RSC and server side rendering.
+ */
 export class LDClientRsc implements Partial<JSSdk> {
   constructor(
     private readonly ldContext: LDContext,

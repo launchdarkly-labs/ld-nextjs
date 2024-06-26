@@ -5,8 +5,8 @@
 
 This solution uses the Node Server SDK and the Javascript SDK. It features:
 
-- Server side rendering with both Server Components and Client Components.
-- A universal LDClient which works on both client and server.
+- Server side rendering
+- Bootstrapping
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) using App Router.
 
@@ -27,17 +27,25 @@ NEXT_PUBLIC_LD_CLIENT_SIDE_ID=***
 
 You should see your flag value rendered in the browser.
 
-## Api
+## API
 
-The code under `ld` exposes these public apis:
+The code under `ld` exposes server and client apis.
+
+### Server API
 
 - `initNodeSdk` - Initializes the Node SDK on server startup using the [instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation)
 
-- `initSsrLDClient` - Setups up the ssr client. Call this at the root layout so the ssr client can be shared across pages.
+- `getBootstrap` - Returns a json suitable for bootstrapping the js sdk.
 
-- `LDProvider` - The react context provider used on the client side.
+- `useLDClientRsc` - Use this to get an ldClient for Server Components.
 
-- `useLDClient` - Universal hook for the server and client side to get the ld client. Use this hook to get the client and evaluate flags.
+### Client API
+
+- `LDProvider` - The react context provider.
+
+- `useLDClient` - Use this to get an ldClient for Client Components.
+
+## How to use this in your own project
 
 Follow these instructions if you want to test this apis in your own project:
 
@@ -62,19 +70,21 @@ export async function register() {
 }
 ```
 
-3. In your root layout component, run `initSsrLDClient` and pass the context and bootstrap to the LDProvider:
+3. In your root layout component, render the `LDProvider` using your `LDContext` and `bootstrap`:
 
 ```tsx
-// layout.tsx
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  // Set up the ssr client
-  const { context, bootstrap } = await initSsrLDClient();
+  // You must supply an LDContext. For example, here getLDContext
+  // inspects cookies and defaults to anonymous.
+  const context = getLDContext();
 
-  // Pass context and bootstrap to LDProvider
+  // A bootstrap is required to initialize LDProvider.
+  const bootstrap = await getBootstrap(context);
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -87,89 +97,39 @@ export default async function RootLayout({
 }
 ```
 
-4. Mark your root page component as async:
+4. Server Components must use the async `useLDClientRsc` function:
 
 ```tsx
-// page.tsx must be async to ensure server cache is properly initialized.
+// You should use your own getLDContext function.
+import { getLDContext } from '@/app/utils';
+import { useLDClientRsc } from '@/ld/server';
+
 export default async function Page() {
-  return <YourApp />;
-}
-```
-
-5. Then all other components server and client will be able to use the universal `useLDClient` hook to get an ld client and evaluate flags. In each case, server side rendering should work too:
-
-#### Server Component
-
-```tsx
-import { useLDClient } from '@/ld';
-
-export default async function YourApp() {
-  const ldc = useLDClient();
+  const ldc = await useLDClientRsc(getLDContext());
   const flagValue = ldc.variation('dev-test-flag');
-
+  
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Server component. FlagValue is {flagValue ? 'true' : 'false'}.
-      <br />
-      <Home />
+      Server Component: {flagValue.toString()}
     </main>
   );
 }
 ```
 
-#### Client Component
+5. Client Components must use the `useLDClient` hook:
 
 ```tsx
 'use client';
 
-import { useLDClient } from '@/ld';
+import { useLDClient } from '@/ld/client';
 
-export default function Home() {
+export default function LDButton() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
-
-  return <>Client component. FlagValue is {flagValue ? 'true' : 'false'}.</>;
+  
+  return <p>Client Component: {flagValue.toString()}</p>;
 }
 ```
 
-## Known issue
-
-There is an [issue](https://github.com/vercel/next.js/discussions/53026) with App Router where nested pages render before their parent layouts. This means if you want to evaluate flags in a page component, you must run `initSsrLDClient` in that page component.
-
-```tsx
-// page.tsx
-export default async function Page() {
-  // Won't work. The ssr client is undefined because this Page runs before the parent layout.
-  const ldc = useLDClient();
-  const flagValue = ldc.variation('dev-test-flag');
-
-  return (
-    <>
-      page.tsx: {flagValue.toString()}
-      <YourApp />
-    </>
-  );
-}
-```
-
-As a workaround, run `initSsrLDClient` in page.tsx in addition to layout.tsx to ensure the ssr client is setup:
-
-```tsx
-export default async function Page() {
-  // Ensure the ssr client is set up
-  await initSsrLDClient();
-
-  // Works now
-  const ldc = useLDClient();
-  const flagValue = ldc.variation('dev-test-flag');
-
-  return (
-    <>
-      page.tsx: {flagValue.toString()}
-      <YourApp />
-    </>
-  );
-}
-```
-
-Don't worry `initSsrLDClient` checks to ensure the ssr client is initialized only once even if you call it multiple times. Note that you only need to use this workaround if you actually need to evaluate flags in a page component. For example, if you only evaluate flags in children components below Page, then you can safely ignore this completely and just call `initSsrLDClient` once at the root layout.
+You will see both components are rendered on the server (view source on your browser). However, only Client Components
+will respond to live changes.

@@ -6,10 +6,13 @@ import type { LDContext } from '@launchdarkly/js-sdk-common';
 const anonymous: LDContext = { kind: 'user', key: 'anon-key', anonymous: true };
 
 /**
- * Looks for an LDContext in a server cookie called 'ld'.
+ * This is an example of how you can source your LDContext. You may also
+ * retrieve it from a database or from request headers.
  *
- * @param def The default context if none is found in cookies. If unspecified
- * and none is found in cookies then anonymous is returned.
+ * This example looks for an LDContext in a server cookie called 'ld'.
+ *
+ * @param def The default context if none is found in cookies. As final
+ * fallback, anonymous is returned.
  *
  */
 export function getLDContext(def?: LDContext) {

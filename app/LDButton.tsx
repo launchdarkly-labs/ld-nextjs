@@ -2,7 +2,7 @@
 
 import { useLDClient } from '@/ld/client';
 
-// This is a client component also rendered on the server.
+// Client Components must useLDClient for evaluation.
 export default function LDButton() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');

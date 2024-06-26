@@ -9,9 +9,12 @@ const ldClientRsc = 'ldClientRsc';
 const getServerCache = cache(() => new Map<string, any>());
 
 /**
- * Only useLDClientRsc with Server Components.
+ * Server Components only. This creates and caches an LDClientRsc object
+ * using React cache which is available on the server side only.
  *
  * @param context The LDContext for evaluation.
+ *
+ * @returns An {@link LDClientRsc} object suitable for RSC and server side rendering.
  */
 export const useLDClientRsc = async (context: LDContext) => {
   const cache = getServerCache();

@@ -19,7 +19,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+  // You must supply an LDContext. For example, here getLDContext
+  // inspects cookies and defaults to anonymous.
   const context = getLDContext();
+
+  // A bootstrap is required to initialize LDProvider.
   const bootstrap = await getBootstrap(context);
 
   return (

@@ -1,4 +1,6 @@
 /**
+ * Initializes the Node SDK on server startup.
+ *
  * Run this once in the instrumentation hook to set up the Node SDK.
  * The node client created is saved in a global variable.
  */
