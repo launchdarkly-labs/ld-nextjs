@@ -1,9 +1,8 @@
-'use client';
+import { getLDContext } from '@/app/utils';
+import { useLDClientRsc } from '@/ld/server';
 
-import { useLDClient } from '@/ld';
-
-export default function App() {
-  const ldc = useLDClient();
+export default async function App() {
+  const ldc = await useLDClientRsc(getLDContext());
   const flagValue = ldc.variation('dev-test-flag');
 
   return (

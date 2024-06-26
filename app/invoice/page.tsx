@@ -1,10 +1,10 @@
-'use client';
-
 import LDButton from '@/app/LDButton';
-import { useLDClient } from '@/ld';
+import { getLDContext } from '@/app/utils';
+import { useLDClient } from '@/ld/client';
+import { useLDClientRsc } from '@/ld/server';
 
-export default function Invoice() {
-  const ldc = useLDClient();
+export default async function Invoice() {
+  const ldc = await useLDClientRsc(getLDContext());
   const flagValue = ldc.variation('dev-test-flag');
 
   return (

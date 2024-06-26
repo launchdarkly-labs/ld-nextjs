@@ -1,5 +1,6 @@
+import { getLDContext } from '@/app/utils';
 import { LDProvider } from '@/ld/client';
-import { getBootstrap, getLDContext } from '@/ld/server';
+import { getBootstrap } from '@/ld/server';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';

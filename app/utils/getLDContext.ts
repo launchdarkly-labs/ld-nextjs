@@ -1,8 +1,7 @@
+import { isServer } from '@/ld/isServer';
 import { cookies } from 'next/headers';
 
 import type { LDContext } from '@launchdarkly/js-sdk-common';
-
-import { isServer } from '../isServer';
 
 const anonymous: LDContext = { kind: 'user', key: 'anon-key', anonymous: true };
 

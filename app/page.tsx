@@ -1,14 +1,14 @@
 import App from '@/app/app';
 import LDButton from '@/app/LDButton';
-import { useLDClientNode } from '@/ld/server';
+import { getLDContext } from '@/app/utils';
+import { useLDClientRsc } from '@/ld/server';
+import Link from 'next/link';
 
 /**
- * To get the ldClient object:
- * useLDClientNode for server components. Must be marked as async.
- * useLDClient for client components and shared components. Must be marked with 'use client'.
+ * Server components must be async and useLDClientRsc.
  */
 export default async function Page() {
-  const ldc = await useLDClientNode();
+  const ldc = await useLDClientRsc(getLDContext());
   const flagValue = ldc.variation('dev-test-flag');
 
   return (
@@ -23,6 +23,7 @@ export default async function Page() {
       <App />
       <br />
       <LDButton />
+      <Link href="/invoice">Invoice</Link>
     </main>
   );
 }

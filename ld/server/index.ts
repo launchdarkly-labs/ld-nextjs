@@ -1,4 +1,3 @@
 export * from './initNodeSdk';
-export * from './useLDClientNode';
-export * from './getLDContext';
+export * from './useLDClientRsc';
 export * from './getBootstrap';

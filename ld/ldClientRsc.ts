@@ -1,7 +1,8 @@
 import type { LDContext, LDFlagSet, LDFlagValue } from '@launchdarkly/js-sdk-common';
-import { LDClient } from '@launchdarkly/node-server-sdk';
 
-export class PartialLDClient implements Partial<LDClient> {
+import { JSSdk } from './types';
+
+export class LDClientRsc implements Partial<JSSdk> {
   constructor(
     private readonly ldContext: LDContext,
     private readonly bootstrap: LDFlagSet,

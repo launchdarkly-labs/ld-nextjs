@@ -1,6 +1,6 @@
 import { LDEvaluationDetailTyped } from '@launchdarkly/js-sdk-common';
 
-import useLDClient from '../useLDClient';
+import { useLDClient } from '../useLDClient';
 
 /**
  * Determines the strongly typed variation of a feature flag.

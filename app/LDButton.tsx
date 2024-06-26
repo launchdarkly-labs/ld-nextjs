@@ -1,6 +1,6 @@
 'use client';
 
-import { useLDClient } from '@/ld';
+import { useLDClient } from '@/ld/client';
 
 // This is a client component also rendered on the server.
 export default function LDButton() {
