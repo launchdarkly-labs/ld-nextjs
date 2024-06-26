@@ -1,6 +1,6 @@
-import { PartialLDClient } from '@/ld/partialLDClient';
 import { cache } from 'react';
 
+import { PartialLDClient } from '../partialLDClient';
 import { getBootstrap, getLDContext } from './';
 
 const _serverCache = cache(() => new Map<string, any>());
