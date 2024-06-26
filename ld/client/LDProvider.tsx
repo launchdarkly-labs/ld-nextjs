@@ -2,15 +2,12 @@
 
 // GOTCHA: launchdarkly-js-client-sdk will soon be replaced with a new js package under
 // the launchdarkly/js-core repo.
-import { basicLogger, initialize, type LDOptions } from 'launchdarkly-js-client-sdk';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { type LDOptions } from 'launchdarkly-js-client-sdk';
+import { PropsWithChildren, useState } from 'react';
 
-import { LDContext, LDFlagSet } from '@launchdarkly/js-sdk-common';
+import { LDContext } from '@launchdarkly/js-sdk-common';
 
-import { isServer } from '../isServer';
-import { createSsrCache } from '../server/ssr/ssrCache';
 import { Provider, type ReactContext } from './reactContext';
-import { setupListeners } from './setupListeners';
 
 type LDProps = {
   context: LDContext;
@@ -27,27 +24,13 @@ type LDProps = {
  *
  * @constructor
  */
+
 export const LDProvider = ({ context, options, children }: PropsWithChildren<LDProps>) => {
-  if (isServer) {
-    // GOTCHA: The root layout component already calls initSsr but this is still required here otherwise
-    // server side rendering does not work for client components. It seems like on the server side, client components
-    // are run asynchronously/somewhat differently from server components resulting in a race.
-    createSsrCache(context, options?.bootstrap as LDFlagSet);
-    return <>{children}</>;
-  }
-
-  const jsSdk = initialize(process.env.NEXT_PUBLIC_LD_CLIENT_SIDE_ID ?? '', context, {
-    ...options,
-    logger: basicLogger({ level: 'debug' }),
+  const [state, setState] = useState<ReactContext>({
+    context,
+    // @ts-ignore
+    bootstrap: options?.bootstrap,
   });
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [state, setState] = useState<ReactContext>({ jsSdk });
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    setupListeners(jsSdk, setState);
-  }, []);
 
   return <Provider value={state}>{children}</Provider>;
 };

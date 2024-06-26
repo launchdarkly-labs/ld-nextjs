@@ -1,4 +1,4 @@
-import LDButton from '@/app/LDButton';
+import Customer from '@/app/customer';
 import { useLDClient } from '@/ld';
 
 // All remaining server and client components can use the universal
@@ -11,7 +11,7 @@ export default function App() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       app.tsx: {flagValue.toString()}
       <br />
-      <LDButton />
+      <Customer />
     </main>
   );
 }

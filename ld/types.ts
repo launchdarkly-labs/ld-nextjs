@@ -2,7 +2,7 @@ import type { LDClient as NodeSdk } from '@launchdarkly/node-server-sdk';
 
 export type { LDClient as JSSdk } from 'launchdarkly-js-client-sdk';
 
-export { NodeSdk };
+export type { NodeSdk };
 
 declare global {
   module globalThis {
