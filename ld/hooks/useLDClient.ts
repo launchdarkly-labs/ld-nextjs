@@ -13,7 +13,14 @@ import { ssrCache } from '../server/ssr/ssrCache';
  */
 const useLDClient = () => {
   if (isServer) {
-    return ssrCache.get('ssrLDClient') as SsrLDClient;
+    try {
+      return ssrCache.get('ssrLDClient') as SsrLDClient;
+    } catch (e) {
+      const error =
+        'The ssr client is undefined. All page components must be marked async. In addition, if you use flags in page components, you must call initSsrLDClient.';
+      console.error(error);
+      throw new Error(error);
+    }
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
