@@ -6,6 +6,8 @@
 This solution uses the Node Server SDK and the Javascript SDK. It features:
 
 - Server side rendering with both Server Components and Client Components.
+- A client example located in `/app/components/helloLDClient.tsx`
+- A React Server Component (RSC) example in `/app/components/helloLDRSC.tsx`
 - A universal LDClient which works on both client and server.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) using App Router.
@@ -14,16 +16,17 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 To run this project:
 
-1. Create an .env file at repo root.
-2. Add your SDK key and client-side ID:
+1. Update the .env.local file with your LaunchDarkly SDK Key configurations.
 
 ```dotenv
-LD_SDK_KEY=sdk-***
-NEXT_PUBLIC_LD_CLIENT_SIDE_ID=***
+LD_SDK_KEY='<YOUR LD SERVER SDK KEY>'
+NEXT_PUBLIC_LD_CLIENT_SIDE_ID='<YOUR LD CLIENT SDK KEY>'
 ```
 
-3. Replace `dev-test-flag` with your own flags in `app.tsx` and `LDButton.tsx`.
-4. `yarn && yarn dev`
+Optional - 
+
+1. Either create `dev-test-flag` in your LaunchDarkly environment or replace with your own flags in `helloLDClient.tsx` and/or `helloLDRSC.tsx`.
+2. `yarn && yarn dev` or `npm i && npm run dev`
 
 You should see your flag value rendered in the browser.
 
@@ -103,16 +106,18 @@ export default async function Page() {
 ```tsx
 import { useLDClient } from '@/ld';
 
-export default async function YourApp() {
+export default async function HelloRSC() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Server component. FlagValue is {flagValue ? 'true' : 'false'}.
-      <br />
-      <Home />
-    </main>
+    <div className="border-2 border-white/20 p-4">
+      <p className="text-xl ldgradient">
+        {flagValue
+          ? "This flag is evaluating True in a React Server Component"
+          : "This flag is evaluating False in a React Server Component"}
+      </p>
+    </div>
   );
 }
 ```
@@ -120,15 +125,39 @@ export default async function YourApp() {
 #### Client Component
 
 ```tsx
-'use client';
+"use client";
 
+import { setCookie } from "cookies-next";
 import { useLDClient } from '@/ld';
+import { useEffect } from "react";
 
-export default function Home() {
+export default function HelloClient() {
+
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
 
-  return <>Client component. FlagValue is {flagValue ? 'true' : 'false'}.</>;
+// Cookies can only be set from within middleware or a client component. We set our LaunchDarkly context cookie here so it's avialable in our server components. You would set this during an authentication action normally. 
+
+  useEffect(() => {
+    async function getLDContext() {
+      const context: any = await ldc?.getContext();
+      return context;
+    }
+
+    getLDContext().then((ldcontext) => {
+      setCookie("ldcontext", ldcontext);
+    });
+  }, [ldc]);
+
+  return (
+    <div className="border-2 border-white/20  p-4 ">
+      <p className="ldgradient text-xl">
+        {flagValue
+          ? "This flag is evaluating True running Client-Side JavaScript"
+          : "This flag is evaluating False running Client-Side JavaScript"}
+      </p>
+    </div>
+  );
 }
 ```
 
