@@ -2,7 +2,7 @@
 
 import { useLDClient } from '@/ld/client';
 
-export default function HelloClient() {
+export default function HelloClientComponent() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
 

@@ -100,7 +100,7 @@ export default async function RootLayout({
 }
 ```
 
-4. Server Components must use the async `useLDClientRsc` function:
+4. Server Components must use the `useLDClientRsc` function, and can be async or non-async:
 
 ```tsx
 // You should use your own getLDContext function.

@@ -1,5 +1,5 @@
-import HelloClient from './components/helloLDClient';
-import HelloRSC from './components/helloLDRSC';
+import HelloClientComponent from './components/helloClientComponent';
+import HelloServerComponent from './components/helloServerComponent';
 
 // GOTCHA: page components must be async. Otherwise the ssr cache may not be initialized correctly.
 export default async function Page() {
@@ -20,8 +20,8 @@ export default async function Page() {
             client SDK and server SDKs.
           </p>
           <div className="grid gap-4 w-1/3 mx-auto">
-            <HelloClient />
-            <HelloRSC />
+            <HelloClientComponent />
+            <HelloServerComponent />
           </div>
         </div>
       </div>
