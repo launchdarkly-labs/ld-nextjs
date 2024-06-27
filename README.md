@@ -5,8 +5,10 @@
 
 This solution uses the Node Server SDK and the Javascript SDK. It features:
 
-- Server side rendering
-- Bootstrapping
+- Server side rendering with both Server Components and Client Components.
+- A client example located in `/app/components/helloLDClient.tsx`
+- A React Server Component (RSC) example in `/app/components/helloLDRSC.tsx`
+- A universal variation method for calling features on both client and server.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) using App Router.
 
@@ -14,16 +16,17 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 To run this project:
 
-1. Create an .env file at repo root.
-2. Add your SDK key and client-side ID:
+1. Update the .env.local file with your LaunchDarkly SDK Key configurations.
 
 ```dotenv
-LD_SDK_KEY=sdk-***
-NEXT_PUBLIC_LD_CLIENT_SIDE_ID=***
+LD_SDK_KEY='<YOUR LD SERVER SDK KEY>'
+NEXT_PUBLIC_LD_CLIENT_SIDE_ID='<YOUR LD CLIENT SDK KEY>'
 ```
 
-3. Replace `dev-test-flag` with your own flags in `app.tsx` and `LDButton.tsx`.
-4. `yarn && yarn dev`
+Optional - 
+
+1. Either create `dev-test-flag` in your LaunchDarkly environment or replace with your own flags in `helloLDClient.tsx` and/or `helloLDRSC.tsx`.
+2. `yarn && yarn dev` or `npm i && npm run dev`
 
 You should see your flag value rendered in the browser.
 
@@ -97,21 +100,25 @@ export default async function RootLayout({
 }
 ```
 
-4. Server Components must use the async `useLDClientRsc` function:
+4. Server Components must use the `useLDClientRsc` function, and can be async or non-async:
 
 ```tsx
 // You should use your own getLDContext function.
 import { getLDContext } from '@/app/utils';
 import { useLDClientRsc } from '@/ld/server';
 
-export default async function Page() {
+export default async function HelloRSC() {
   const ldc = await useLDClientRsc(getLDContext());
   const flagValue = ldc.variation('dev-test-flag');
-  
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Server Component: {flagValue.toString()}
-    </main>
+    <div className="border-2 border-white/20 p-4">
+      <p className="text-xl ldgradient">
+        {flagValue
+          ? "This flag is evaluating True in a React Server Component"
+          : "This flag is evaluating False in a React Server Component"}
+      </p>
+    </div>
   );
 }
 ```
@@ -123,11 +130,19 @@ export default async function Page() {
 
 import { useLDClient } from '@/ld/client';
 
-export default function LDButton() {
+export default function HelloClient() {
   const ldc = useLDClient();
   const flagValue = ldc.variation('dev-test-flag');
-  
-  return <p>Client Component: {flagValue.toString()}</p>;
+
+  return (
+    <div className="border-2 border-white/20  p-4 ">
+      <p className="ldgradient text-xl">
+        {flagValue
+          ? "This flag is evaluating True running Client-Side JavaScript"
+          : "This flag is evaluating False running Client-Side JavaScript"}
+      </p>
+    </div>
+  );
 }
 ```
 
