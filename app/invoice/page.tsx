@@ -1,6 +1,4 @@
-import LDButton from '@/app/LDButton';
 import { getLDContext } from '@/app/utils';
-import { useLDClient } from '@/ld/client';
 import { useLDClientRsc } from '@/ld/server';
 
 export default async function Invoice() {
@@ -8,16 +6,12 @@ export default async function Invoice() {
   const flagValue = ldc.variation('dev-test-flag');
 
   return (
-    <>
-      <b>Invoice</b>
-      <br />
-      <br />
-      context: {JSON.stringify(ldc.getContext())}
-      <br />
-      invoice.tsx: {flagValue.toString()}
-      <br />
-      <br />
-      <LDButton />
-    </>
+    <div className='h-screen flex flex-col items-center justify-center font-audimat mx-auto '>
+      <div className='border-2 border-white/20 p-4'>
+      <p className='text-4xl ldgradient'>Invoice</p>
+      <p>context: {JSON.stringify(ldc.getContext(), null, 4)}</p>
+      <p>Feature flag value in invoice.tsx: <span className=''>{flagValue.toString()}</span></p>
+      </div>
+    </div>
   );
 }
