@@ -2,8 +2,8 @@ import { cache } from 'react';
 
 import { LDContext } from '@launchdarkly/js-sdk-common';
 
-import { LDClientRsc } from '../ldClientRsc';
-import { getBootstrap } from './';
+import { LDClientRsc } from '../../ldClientRsc';
+import { getBootstrap } from '../getBootstrap';
 
 const ldClientRsc = 'ldClientRsc';
 const getServerCache = cache(() => new Map<string, any>());
@@ -20,9 +20,9 @@ export const useLDClientRsc = async (context: LDContext) => {
   const cache = getServerCache();
   let cachedClient = cache.get(ldClientRsc);
 
+
   if (!cachedClient) {
     const bootstrap = await getBootstrap(context);
-    console.log(`*** create cache ldClientRsc: ${context.key}`);
     cachedClient = new LDClientRsc(context, bootstrap);
     cache.set(ldClientRsc, cachedClient);
   } else {

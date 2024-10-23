@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { LDClientRsc } from '../../ldClientRsc';
 import { context as reactContext, type ReactContext } from '../reactContext';
@@ -9,6 +9,7 @@ import { context as reactContext, type ReactContext } from '../reactContext';
 export const useLDClient = () => {
   const { context, bootstrap, jsSdk } = useContext<ReactContext>(reactContext);
 
-  // TODO: memo construction of LDClientRsc
-  return jsSdk ?? new LDClientRsc(context, bootstrap);
+  return useMemo(() => {
+    return jsSdk ?? new LDClientRsc(context, bootstrap);
+  }, [jsSdk, context, bootstrap]);
 };

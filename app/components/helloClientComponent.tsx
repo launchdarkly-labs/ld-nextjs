@@ -1,10 +1,10 @@
 'use client';
 
 import { useLDClient } from '@/ld/client';
+import { useTypedVariation } from '@/ld/client/hooks/variation/useTypedVariation';
 
 export default function HelloClientComponent() {
-  const ldc = useLDClient();
-  const flagValue = ldc.variation('dev-test-flag');
+  const flagValue = useTypedVariation('dev-test-flag', false);
 
   return (
     <div className="border-2 border-white/20  p-4 ">

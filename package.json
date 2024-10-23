@@ -10,11 +10,12 @@
     "prettier": "npx prettier --write \"**/*.{js,ts,tsx,json,yaml,yml,md,mjs}\" --log-level warn"
   },
   "dependencies": {
+    "@launchdarkly/js-client-sdk-common": "^1.10.0",
     "@launchdarkly/node-server-sdk": "^9.1.1",
     "launchdarkly-js-client-sdk": "^3.3.0",
-    "next": "^14.2.3",
-    "react": "^18",
-    "react-dom": "^18"
+    "next": "^15.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

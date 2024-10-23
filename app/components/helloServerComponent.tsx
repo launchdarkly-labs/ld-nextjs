@@ -1,9 +1,8 @@
 import { getLDContext } from '@/app/utils';
-import { useLDClientRsc } from '@/ld/server';
+import { useVariationRsc } from '@/ld/server';
 
 export default async function HelloServerComponent() {
-  const ldc = await useLDClientRsc(getLDContext());
-  const flagValue = ldc.variation('dev-test-flag');
+  const flagValue = await useVariationRsc('dev-test-flag', await getLDContext());
 
   return (
     <div className="border-2 border-white/20 p-4">

@@ -1,7 +1,7 @@
-import { isServer } from '@/ld/isServer';
 import { cookies } from 'next/headers';
 
-import type { LDContext } from '@launchdarkly/js-sdk-common';
+import type { LDContext } from '@launchdarkly/node-server-sdk';
+import { isServer } from '../../ld/isServer';
 
 const anonymous: LDContext = { kind: 'user', key: 'anon-key', anonymous: true };
 
@@ -15,16 +15,20 @@ const anonymous: LDContext = { kind: 'user', key: 'anon-key', anonymous: true };
  * fallback, anonymous is returned.
  *
  */
-export function getLDContext(def?: LDContext) {
+export async function getLDContext(def?: LDContext): Promise<LDContext> {
   let context = def ?? anonymous;
 
   if (isServer) {
-    const ld = cookies().get('ld');
-    if (!ld) {
-      console.log(`*** no cookie, defaulting to ${JSON.stringify(context)} ***`);
-    } else {
-      console.log(`*** found cookie ${JSON.stringify(ld.value)} ***`);
-      context = JSON.parse(ld.value);
+    try {
+      const cookieStore = await cookies();
+      const ld = cookieStore.get('ld');
+      if (!ld) {
+      } else {
+        console.log(`*** found cookie ${JSON.stringify(ld.value)} ***`);
+        context = JSON.parse(ld.value);
+      }
+    } catch (error) {
+      console.error('Error accessing cookies:', error);
     }
   }
 

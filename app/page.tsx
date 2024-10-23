@@ -11,7 +11,7 @@ export default async function Page() {
             Hello From LaunchDarkly!
           </h1>
           <p className="text-5xl font-audimat ldgradient w-3/4 mx-auto">
-            This is a Next.js 14 template with LaunchDarkly
+            This is a Next.js 15 template with LaunchDarkly
           </p>
           <p className="text-lg font-audimat pb-4 w-2/3 mx-auto">
             To evaluate the flags below, create a boolean flag with a key of{" "}

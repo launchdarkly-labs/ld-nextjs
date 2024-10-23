@@ -6,6 +6,7 @@ export type { NodeSdk };
 
 declare global {
   module globalThis {
+    // eslint-disable-next-line vars-on-top, no-var
     var nodeSdk: NodeSdk;
   }
 }

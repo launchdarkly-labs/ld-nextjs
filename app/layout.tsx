@@ -3,7 +3,7 @@ import { LDProvider } from '@/ld/client';
 import { getBootstrap } from '@/ld/server';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import './globals.css';
 
@@ -21,7 +21,7 @@ export default async function RootLayout({
 }>) {
   // You must supply an LDContext. For example, here getLDContext
   // inspects cookies and defaults to anonymous.
-  const context = getLDContext();
+  const context = await getLDContext();
 
   // A bootstrap is required to initialize LDProvider.
   const bootstrap = await getBootstrap(context);
@@ -29,9 +29,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <LDProvider context={context} options={{ bootstrap }}>
-          {children}
+        <Suspense fallback={<div>Loading...</div>}>
+          <LDProvider context={context} options={{ bootstrap }}>
+            {children}
         </LDProvider>
+        </Suspense>
       </body>
     </html>
   );
