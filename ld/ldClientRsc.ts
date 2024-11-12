@@ -40,7 +40,6 @@ export class LDClientRsc implements PartialJSSdk {
 
   variationDetail(key: string, defaultValue?: LDFlagValue): LDEvaluationDetail {
     if (isServer) {
-      // On the server during ssr, call variation for analytics purposes.
       global.nodeSdk.variationDetail(key, this._ldContext, defaultValue).then(/* ignore */);
     }
 
